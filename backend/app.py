@@ -1,6 +1,7 @@
 from flask import *
 from flask_session import Session
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_cors import CORS
 
 from database.produtos import LISTA_PRODUTOS, carrinho, usuarios
 
@@ -9,6 +10,8 @@ app = Flask(__name__)
 app.secret_key = 's69LFQk4eGAeHXRk7QfPRc6fspnJMCH7muRhL^PGcuu@82k&oNgH6Cj9wKYZpGBMZGc!Wo9ZoMUTY#ZKqAUY%YDX@GXnqdix59DM7ZCSbXiydj$4ezA4s75UmgFz2beMd9J!DoZvMsA4zqx6rQV96#HkeyEaF$8u#VuTx8MStrG@jVkuKaSHAdF$C2ybd^LGM34WGja2njvDBg4vTAaybnbMU8Gwu@fKn7Nt&%uP%GCrgU$M$brwB5NR72hc&@YzZNd3ekww6W&yn7QUp%KD3QtsLf6qbmcUz^C23ZqnifKmb!8oF5GRNhA7n5d2D!NVaSWo#XMMDcKMuF3fz@N#gUyENcYfmut67QwKdxrKTX5QK8YtoeiepEYnBX&X$mWqEibaMS%DTGGphDBxXuCbQG^fGNN3Prtpj9q$Adr5uMzu#tzNpLuJM2haEMyniehsQ8!tzdAgA&6TSRPYkaE3Da!mS3APicap3pxKjL5tHPXD&QdBi8Et7mNu8p#ik'
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = 'filesystem'
+
+CORS(app)
 
 # Session(app)
 
