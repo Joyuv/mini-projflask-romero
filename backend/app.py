@@ -65,6 +65,10 @@ def carrinho():
         pass #eventualmente o request
     return render_template('carrinho.html', carrinho=carrinho)
 
+@app.route("/api/mensagem")
+def mensagem():
+    return jsonify({'mensagem': 'Olá Do Flask!'})
+
 if __name__ == '__main__':
     app.run(debug=True)
 
