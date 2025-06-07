@@ -1,72 +1,107 @@
 import { useState } from "react";
+import axios from "axios";
 export default function Cadastro() {
-  const [mostrarSenha, setMostrarSenha] = useState(false);
+  const [form, setForm] = useState({
+    email: "",
+    nome: "",
+    senha: "",
+    mostrarSenha: false,
+  });
+
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setForm({ ...form, [name]: type === "checkbox" ? checked : value });
+  };
+
+  const handleSubmit = async (e) => {
+    console.log("enviando", form);
+    e.preventDefault();
+    try {
+      await axios.post("http://localhost:5000/usuarios", {
+        email: form.email,
+        nome: form.nome,
+        senha: form.senha,
+      });
+      alert("Usuário salvo com sucesso!");
+      setForm({ email: "", nome: "", senha: "", mostrarSenha: false });
+    } catch (err) {
+      alert("Erro ao salvar usuário");
+    }
+  };
 
   return (
     <>
-      <form>
-        <label className="form-label" htmlFor="email">
-          Email
-        </label>
-        <input
-          className="form-control bg-dark-subtle"
-          type="text"
-          name="email"
-          id="email"
-          placeholder="Digite um email"
-          required
-        />
+      <div className="card">
+        <div className="card-header">Cadastro</div>
+        <div className="card-body">
+          <form onSubmit={handleSubmit}>
+            <label className="form-label" htmlFor="email">
+              Email
+            </label>
+            <input
+              className="form-control bg-dark-subtle"
+              type="text"
+              name="email"
+              id="email"
+              placeholder="Digite um email"
+              value={form.email}
+              onChange={handleChange}
+              required
+            />
 
-        <label className="form-label" htmlFor="username">
-          Nome de usuário
-        </label>
-        <input
-          className="form-control bg-dark-subtle"
-          type="text"
-          name="login"
-          id="username"
-          placeholder="Digite um nome de usuário"
-          required
-        />
+            <label className="form-label" htmlFor="username">
+              Nome de usuário
+            </label>
+            <input
+              className="form-control bg-dark-subtle"
+              type="text"
+              name="nome"
+              id="username"
+              placeholder="Digite um nome de usuário"
+              value={form.nome}
+              onChange={handleChange}
+              required
+            />
 
-        <label className="form-label" htmlFor="senha">
-          Senha
-        </label>
-        <input
-          className="form-control bg-dark-subtle"
-          type={mostrarSenha ? "text" : "password"}
-          id="senha"
-          name="senha"
-          placeholder="Digite uma senha"
-          required
-        />
-        <span style={{ fontSize: "0.78em" }}>
-          <label
-            className="form-label"
-            style={{ color: "rgba(230, 30, 30, 0.53)" }}
-            htmlFor="senha"
-          >
-            * A senha deve ter ao menos 5 caracteres
-          </label>
-          <input
-            className="form-check-input"
-            onChange={(e) => setMostrarSenha(e.target.checked)}
-            id="mostrar_senha"
-            type="checkbox"
-            value="teste"
-          />
-          <label
-            className="form-label"
-            className="form-check-label"
-            htmlFor="mostrar_senha"
-          >
-            Mostrar senha
-          </label>
-        </span>
-        <button className="btn btn-warning" type="submit">
-          Cadastrar
-        </button>
-      </form>
+            <label className="form-label" htmlFor="senha">
+              Senha
+            </label>
+            <input
+              className="form-control bg-dark-subtle"
+              type={form.mostrarSenha ? "text" : "password"}
+              id="senha"
+              name="senha"
+              placeholder="Digite uma senha"
+              value={form.senha}
+              onChange={handleChange}
+              required
+            />
+            <span style={{ fontSize: "0.78em" }}>
+              <label
+                className="form-label"
+                style={{ color: "rgba(230, 30, 30, 0.53)" }}
+                htmlFor="senha"
+              >
+                * A senha deve ter ao menos 5 caracteres
+              </label>
+              <input
+                className="form-check-input"
+                name="mostrarSenha"
+                checked={form.mostrarSenha}
+                onChange={handleChange}
+                id="mostrar_senha"
+                type="checkbox"
+              />
+              <label className="form-check-label" htmlFor="mostrar_senha">
+                Mostrar senha
+              </label>
+            </span>
+            <button className="btn btn-warning" type="submit">
+              Cadastrar
+            </button>
+          </form>
+        </div>
+      </div>
     </>
   );
 }
