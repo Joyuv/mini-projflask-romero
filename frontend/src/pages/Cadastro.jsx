@@ -1,6 +1,8 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 export default function Cadastro() {
+  const navigate = useNavigate();
   const [form, setForm] = useState({
     email: "",
     nome: "",
@@ -22,11 +24,12 @@ export default function Cadastro() {
         nome: form.nome,
         senha: form.senha,
       });
-      alert("Usuário salvo com sucesso!");
-      setForm({ email: "", nome: "", senha: "", mostrarSenha: false });
     } catch (err) {
       alert("Erro ao salvar usuário");
     }
+    alert("Usuário salvo com sucesso!");
+    navigate("/login", { replace: true });
+    setForm({ email: "", nome: "", senha: "", mostrarSenha: false });
   };
 
   return (
