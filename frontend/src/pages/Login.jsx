@@ -18,7 +18,7 @@ export default function Login() {
     console.log("enviando", form);
     e.preventDefault();
     try {
-      await axios.post("http://localhost:5000/login", {
+      await axios.post("https://mini-projflask-romero.onrender.com/login", {
         email: form.email,
         senha: form.senha,
       });

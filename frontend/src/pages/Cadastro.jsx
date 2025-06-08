@@ -19,7 +19,7 @@ export default function Cadastro() {
     console.log("enviando", form);
     e.preventDefault();
     try {
-      await axios.post("http://localhost:5000/usuarios", {
+      await axios.post("https://mini-projflask-romero.onrender.com/usuarios", {
         email: form.email,
         nome: form.nome,
         senha: form.senha,
