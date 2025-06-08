@@ -22,7 +22,7 @@ def cadastrar_usuarios():
 
 @app.route("/usuarios", methods=["GET"])
 def lista_usuarios():
-    return jsonify(usuarios)
+    return render_template("usuarios.html", usuarios=usuarios)
 
 
 @app.route("/login", methods=["POST", "GET"])
