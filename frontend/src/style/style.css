@@ -49,3 +49,21 @@ form {
 label {
   user-select: none;
 }
+.card {
+  background-color: #242424;
+  color: white;
+  padding: 0 1em;
+}
+ul {
+  li {
+    input {
+      background-color: #242424;
+    }
+    label {
+      padding: 0.2em 0.3em 0.2em 0;
+    }
+    .form-check-input {
+      margin: 0.5em 0.3em 0.2em 0;
+    }
+  }
+}
