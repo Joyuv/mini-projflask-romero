@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import axios from "axios";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Cadastro from "./pages/Cadastro";
@@ -11,6 +12,23 @@ import "./App.css";
 
 function App() {
   const lugar = useLocation();
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/login") //https://mini-projflask-romero.onrender.com/login
+      .then(function (response) {
+        if (response["username"] != null) {
+          document.getElementById("login").style.visibility = "hidden";
+          document.getElementById("cadastro").style.visibility = "hidden";
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      })
+      .finally(function () {
+        console.log("rodou");
+      });
+  });
+
   useEffect(() => {
     const pElemento = document.getElementById("rota-atual");
     if (pElemento) {

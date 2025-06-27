@@ -1,7 +1,10 @@
 from flask import *
+from flask_session import Session
 from flask_cors import CORS
 
 app = Flask(__name__)
+
+app.config["SESSION_TYPE"] = "filesystem"
 
 CORS(app)
 carrinho = {}
@@ -35,9 +38,12 @@ def login():
 
         if email in usuarios:
             if usuarios[email][1] == senha:
+                session["name"] = usuarios[email][0]
                 return jsonify({"mensagem": "Logado com sucesso!"}), 201
-    else:
-        return jsonify({"mensagem": "Nada para ver aqui"})
+            return jsonify({"mensagem": "Erro ao logar"})
+        return jsonify({"mensagm": "Erro ao logar"})
+    if request.method == "GET":
+        return jsonify({"username": session["name"]})
 
 @app.route("/carrinho", methods=["POST"])
 def carrinho_cadastro():
