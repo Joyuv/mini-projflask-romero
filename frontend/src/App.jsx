@@ -5,6 +5,7 @@ import Home from "./pages/Home";
 import Cadastro from "./pages/Cadastro";
 import Login from "./pages/Login";
 import Produtos from "./pages/Produtos";
+import Carrinho from "./pages/Carrinho"
 
 import "./App.css";
 
@@ -22,6 +23,8 @@ function App() {
         texto = "Cadastrar-se";
       } else if (lugar.pathname === "/login") {
         texto = "Logar";
+      } else if (lugar.pathname === "/carrinho") {
+        texto = "Meu Carrinho"
       } else {
         texto = "Seção desconhecida";
       }
@@ -34,6 +37,7 @@ function App() {
       <Route path="/cadastro" element={<Cadastro />} />
       <Route path="/login" element={<Login />} />
       <Route path="/produtos" element={<Produtos />} />
+      <Route path="/carrinho" element={<Carrinho />} />
     </Routes>
   );
 }

@@ -4,7 +4,7 @@ from flask_cors import CORS
 app = Flask(__name__)
 
 CORS(app)
-usuarios = {}
+carrinho = {}
 
 
 @app.route("/usuarios", methods=["POST"])
@@ -38,6 +38,16 @@ def login():
                 return jsonify({"mensagem": "Logado com sucesso!"}), 201
     else:
         return jsonify({"mensagem": "Nada para ver aqui"})
+
+@app.route("/carrinho", methods=["POST"])
+def carrinho_cadastro():
+    global carrinho
+    carrinho = request.get_json()
+    return jsonify({"mensagem": "Carrinho salvo"})
+@app.route("/carrinho", methods=["GET"])
+def carrinho_pegar():
+    return jsonify({"carrinho": carrinho})
+
 
 
 if __name__ == "__main__":
