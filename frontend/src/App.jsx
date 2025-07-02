@@ -14,9 +14,9 @@ function App() {
   const lugar = useLocation();
   useEffect(() => {
     axios
-      .get("http://localhost:5000/login") //https://mini-projflask-romero.onrender.com/login
+      .get("http://localhost:5000/login", { withCredentials: true }) //https://mini-projflask-romero.onrender.com/login
       .then(function (response) {
-        if (response["username"] != null) {
+        if (response.data["logado"] != null) {
           document.getElementById("login").style.visibility = "hidden";
           document.getElementById("cadastro").style.visibility = "hidden";
         }

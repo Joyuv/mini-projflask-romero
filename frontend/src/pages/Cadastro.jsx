@@ -27,10 +27,11 @@ export default function Cadastro() {
       });
     } catch (err) {
       alert("Erro ao salvar usuário");
+    } finally {
+      alert("Usuário salvo com sucesso!");
+      navigate("/login", { replace: true });
+      setForm({ email: "", nome: "", senha: "", mostrarSenha: false });
     }
-    alert("Usuário salvo com sucesso!");
-    navigate("/login", { replace: true });
-    setForm({ email: "", nome: "", senha: "", mostrarSenha: false });
   };
 
   return (

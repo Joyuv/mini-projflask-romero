@@ -1,14 +1,20 @@
 from flask import *
-from flask_session import Session
 from flask_cors import CORS
+from flask_login import *
+from modelos import User, usuarios
 
 app = Flask(__name__)
 
-app.config["SESSION_TYPE"] = "filesystem"
-
-CORS(app)
+CORS(app, supports_credentials=True)
 carrinho = {}
 
+login_manager = LoginManager() 
+app.secret_key = 'guilherme'
+login_manager.init_app(app)
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.get(user_id, usuarios)
 
 @app.route("/usuarios", methods=["POST"])
 def cadastrar_usuarios():
@@ -17,10 +23,13 @@ def cadastrar_usuarios():
     email = data.get("email")
     nome = data.get("nome")
     senha = data.get("senha")
-
-    usuarios[email] = [nome, senha]
-
-    return jsonify({"mensagem": "Usuário cadastrado com sucesso!"}), 201
+    if email not in usuarios.keys():
+        usuarios[email] = [nome, senha]
+        user = User(email, nome, senha)
+        user.id = email
+        login_user(user)
+        return jsonify({"mensagem": "Usuário cadastrado com sucesso!"}), 201
+    return jsonify({"mensagem": "Erro ao cadastrar"})
 
 
 @app.route("/usuarios", methods=["GET"])
@@ -28,7 +37,7 @@ def lista_usuarios():
     return render_template("usuarios.html", usuarios=usuarios)
 
 
-@app.route("/login", methods=["POST", "GET"])
+@app.route("/login", methods=["POST"])
 def login():
     if request.method == "POST":
         data = request.get_json()
@@ -38,12 +47,17 @@ def login():
 
         if email in usuarios:
             if usuarios[email][1] == senha:
-                session["name"] = usuarios[email][0]
+                user = User(email, usuarios[email][0], senha)
+                user.id = email
+                login_user(user)
                 return jsonify({"mensagem": "Logado com sucesso!"}), 201
             return jsonify({"mensagem": "Erro ao logar"})
         return jsonify({"mensagm": "Erro ao logar"})
-    if request.method == "GET":
-        return jsonify({"username": session["name"]})
+
+@app.route('/login', methods=["GET"])
+@login_required
+def get_user():
+    return jsonify({"logado": "Usuário logado"})
 
 @app.route("/carrinho", methods=["POST"])
 def carrinho_cadastro():
@@ -52,9 +66,10 @@ def carrinho_cadastro():
     return jsonify({"mensagem": "Carrinho salvo"})
 @app.route("/carrinho", methods=["GET"])
 def carrinho_pegar():
+    carrinholista = []
+    for x in carrinho.keys():
+        carrinholista.append([x, carrinho[x]])
     return jsonify({"carrinho": carrinho})
-
-
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -1,27 +1,39 @@
-export default function Carrinho(){
-    const produtosNodes = axios.get.map((produto, index) => (
-        <li key={index} className="list-group-item">
-        <label className="form-check-label">
-            {produto[0]} - R${produto[1].toFixed(2)}
-        </label>
-        <input
-            className="form-check-input"
-            type="checkbox"
-            id={produto[0]}
-            placeholder="Selecionar"
-            name={produto[0]}
-        />
-        <input
-            className="form-control"
-            type="text"
-            id={produto[0] + "qnt"}
-            name={produto[0] + "qnt"}
-            placeholder="Quantidade"
-        />
-        </li>))
-    return(
-        <>
-            Nada ainda
-        </>
-    )
+import { useEffect, useState } from "react";
+import axios from "axios";
+
+export default function Carrinho() {
+  const [carrinhoLista, setCarrinhoLista] = useState([]);
+
+  useEffect(() => {
+    const fetchCarrinho = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/carrinho");
+        const carrinho = response.data["carrinho"];
+        console.log("Carrinho:", carrinho);
+
+        const nodes = carrinho.map(([produto, quantidade], index) => (
+          <li key={index} className="list-group-item">
+            <label className="form-check-label">
+              {produto} — Quantidade: {quantidade}
+            </label>
+          </li>
+        ));
+
+        setCarrinhoLista(nodes);
+      } catch (error) {
+        console.error("Erro ao buscar carrinho:", error);
+      }
+    };
+
+    fetchCarrinho();
+  }, []);
+
+  return (
+    <div className="card">
+      <ul className="list-group">{carrinhoLista}</ul>
+      <div className="card-footer">
+        <h2>Carrinho</h2>
+      </div>
+    </div>
+  );
 }
