@@ -13,6 +13,5 @@ class User(UserMixin):
         if user_id in usuarios.keys():
             nome, senha = usuarios[user_id]
 
-            user = User(user_id, nome, senha)
-            return user
+            return cls(user_id, nome, senha)
         return None

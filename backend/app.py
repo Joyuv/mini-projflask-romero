@@ -6,7 +6,6 @@ from modelos import User, usuarios
 app = Flask(__name__)
 
 CORS(app, supports_credentials=True)
-carrinho = {}
 
 login_manager = LoginManager() 
 app.secret_key = 'guilherme'
@@ -60,16 +59,20 @@ def get_user():
     return jsonify({"logado": "Usuário logado"})
 
 @app.route("/carrinho", methods=["POST"])
+@login_required
 def carrinho_cadastro():
     global carrinho
     carrinho = request.get_json()
+    session['carrinho'] = carrinho
     return jsonify({"mensagem": "Carrinho salvo"})
 @app.route("/carrinho", methods=["GET"])
+@login_required
 def carrinho_pegar():
     carrinholista = []
+    carrinho = session.get('carrinho')
     for x in carrinho.keys():
         carrinholista.append([x, carrinho[x]])
-    return jsonify({"carrinho": carrinho})
+    return jsonify({"carrinho": carrinholista})
 
 if __name__ == "__main__":
     app.run(debug=True)

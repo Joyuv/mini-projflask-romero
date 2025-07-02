@@ -1,4 +1,4 @@
-import axios from "axios"
+import axios from "axios";
 
 export default function Produtos() {
   const LISTA_PRODUTOS = [
@@ -32,29 +32,32 @@ export default function Produtos() {
         placeholder="Quantidade"
       />
     </li>
-  
   ));
   const handleSubmit = async (e) => {
     e.preventDefault(); // se estiver usando um <form>
-  
-    const checkboxes = Array.from(document.querySelectorAll("input[type='checkbox']"));
-    
+
+    const checkboxes = Array.from(
+      document.querySelectorAll("input[type='checkbox']"),
+    );
+
     const produtosSelecionados = checkboxes
-      .filter(cb => cb.checked)
+      .filter((cb) => cb.checked)
       .reduce((acc, cb) => {
         const id = cb.name;
         const quantInput = document.querySelector(`input[name='${id}qnt']`);
         const quant = parseInt(quantInput?.value, 10);
-  
+
         if (quant > 0) {
           acc[id] = quant;
         }
-  
+
         return acc;
       }, {});
-  
+
     try {
-      await axios.post("http://localhost:5000/carrinho", produtosSelecionados);
+      await axios.post("http://localhost:5000/carrinho", produtosSelecionados, {
+        withCredentials: true,
+      });
       console.log("Enviado com sucesso!");
     } catch (err) {
       console.error("Erro ao enviar:", err);
